@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AllFlagService } from '../services/all-flag.service';
 
 @Component({
   selector: 'app-generator',
@@ -31,18 +32,21 @@ export class GeneratorComponent implements OnInit{
     {name:'Bahamas',image:'assets/flags/Flag_of_the_Bahamas.svg.png'},
     {name:'Bulgaria',image:'assets/flags/Flag_of_Bulgaria.svg.png'},
   ]
+
+  fakeArray = []
   flagSelezionata :any;
   currentIndex : number = 0
-  constructor(){}
+  constructor(private allFlagService : AllFlagService){}
 
   ngOnInit(): void {
-    this.generatorFlag()
+    this.generatorFlag();
+    this.getAllFlags();
   }
 
   generatorFlag(){
-    const randomFlag = Math.floor(Math.random() * this.listFlag.length)
-    this.flagSelezionata = this.listFlag[randomFlag]
-    this.currentIndex = randomFlag
+    const randomFlag = Math.floor(Math.random() * this.listFlag.length);
+    this.flagSelezionata = this.listFlag[randomFlag];
+    this.currentIndex = randomFlag;
   }
 
   nextFlag(){
@@ -55,4 +59,10 @@ export class GeneratorComponent implements OnInit{
     this.flagSelezionata = this.listFlag[this.currentIndex]
   }
 
+  getAllFlags():void{
+    this.allFlagService.getAllFlags().subscribe((e) => {
+      this.fakeArray = e
+      console.log(this.fakeArray);
+    })
+  }
 }
